@@ -307,7 +307,11 @@ Server address: http://${getLocalIP()}:${this.settings.port}`
     }
   }
   sanitize(name) {
-    return name.replace(/[\\/:*?"<>|#^[\]]/g, "-").trim();
+    return name
+      .replace(/\r?\n/g, " & ")          // KOReader joins multiple authors with \n → "Author A & Author B"
+      .replace(/[\\/:*?"<>|#^[\]]/g, "-") // strip characters illegal in filenames
+      .replace(/\s+/g, " ")              // collapse any leftover double spaces
+      .trim();
   }
   /** Create or fully overwrite the book's Markdown note. Returns the file path. */
   async upsertBookNote(book) {

@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "minAppVersion": "0.15.0",
   "description": "Run a KOSync-compatible server inside Obsidian. Sync KOReader reading progress and annotations directly to your vault as Markdown files.",
-  "author": "Justin Meijer",
-  "authorUrl": "https://github.com/19jm81/",
+  "author": "obsidian-koreader-sync",
+  "authorUrl": "",
   "isDesktopOnly": true
 }
