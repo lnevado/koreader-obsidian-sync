@@ -364,8 +364,17 @@ Server address: http://${getLocalIP()}:${this.settings.port}`
     const lines = [];
     lines.push("---");
     lines.push(`title: "${esc(book.title)}"`);
-    if (book.author)
-      lines.push(`author: "${esc(book.author)}"`);
+    if (book.author) {
+      // KOReader separates co-authors with \n. Render as a YAML list so
+      // Obsidian treats the property as "List" type (one author per line).
+      const authors = book.author.split("\n").map((a) => a.trim()).filter(Boolean);
+      if (authors.length === 1) {
+        lines.push(`author: "${esc(authors[0])}"`);
+      } else {
+        lines.push("author:");
+        for (const a of authors) lines.push(`  - "${esc(a)}"`);
+      }
+    }
     if (book.series)
       lines.push(`series: "${esc(book.series)}"`);
     if (book.language)
@@ -382,8 +391,10 @@ Server address: http://${getLocalIP()}:${this.settings.port}`
     lines.push(`# ${book.title}`);
     lines.push("");
     if (book.author || book.series) {
-      if (book.author)
-        lines.push(`**Author:** ${book.author}  `);
+      if (book.author) {
+        const authorsDisplay = book.author.split("\n").map((a) => a.trim()).filter(Boolean).join(" & ");
+        lines.push(`**Author:** ${authorsDisplay}  `);
+      }
       if (book.series)
         lines.push(`**Series:** ${book.series}  `);
       lines.push("");
